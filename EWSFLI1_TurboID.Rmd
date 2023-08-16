@@ -1,8 +1,10 @@
 ---
-title: "EWSFLI1_TurboID"
+title: "EWSFLI1 TurboID"
 author: "Aiola Stoja"
 date: "2023-08-14"
 output: html_document
+
+runtime: shiny
 ---
 
 
@@ -12,6 +14,10 @@ library(readxl)
 library("eulerr")
 library("dplyr")
 library("VennDiagram")
+library(devtools)
+#install_github("wjawaid/enrichR")
+library(enrichR)
+library(ggpubr)
 
 ```
 
@@ -24,8 +30,9 @@ naomit_mydata <- lapply(my_data, function(x) x[!is.na(x)])
 
 ```
 
+# EWSFLI1 vs EWS TurboID Venn Diagram
 
-```{r venn diagram ews vs ewsfli1 only, include=FALSE}
+```{r venn diagram ews vs ewsfli1 only, echo=FALSE, message=FALSE, warning=FALSE}
 
 genes.venn <- euler(naomit_mydata)
 plot(genes.venn, quantities = TRUE)
@@ -37,18 +44,104 @@ plot(genes.venn, quantities = TRUE)
 VennPartition<-get.venn.partitions(naomit_mydata) %>% dplyr::as_tibble()
 
 
-
-```
-
-
-```{r extracting venn partitions, include=FALSE}
-
+listVennPartition <- setNames(as.list(VennPartition$..values..), VennPartition$..set..)
 
 
 ```
 
 
+```{r setup enrichr , include=FALSE}
+
+websiteLive <- getOption("enrichR.live")
+if (websiteLive) {
+    listEnrichrSites()
+    setEnrichrSite("Enrichr") # Human genes   
+}
+
+if (websiteLive) dbs <- listEnrichrDbs()
+
+dbs <- c("GO_Molecular_Function_2015", "GO_Cellular_Component_2015", "GO_Biological_Process_2015")
+
+if (websiteLive) {
+    enrichedEWSxEWSFLI1 <- enrichr(listVennPartition[["EWS∩EWS::FLI1"]], dbs)
+}
+
+if (websiteLive) {
+    enrichedEWSFLI1 <- enrichr(listVennPartition[["(EWS::FLI1)∖(EWS)"]], dbs)
+}
+
+if (websiteLive) {
+    enrichedEWS <- enrichr(listVennPartition[["(EWS)∖(EWS::FLI1)"]], dbs)
+}
 
 
 
+```
+
+# EWSFLI1 and EWS shared gene GO terms
+
+```{r enrichr EWSxEWSFLI1 shared, echo=FALSE, message=FALSE, warning=FALSE }
+
+
+#Biological Process
+plot1<-if (websiteLive) {
+    plotEnrich(enrichedEWSxEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS and EWSFLI1 shared Enrichr: GO Biolog Process")
+}
+
+#Molecular Function
+plot2<-if (websiteLive) {
+    plotEnrich(enrichedEWSxEWSFLI1$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS and EWSFLI1 shared Enrichr: GO Molec Function")
+}
+
+#Cellular component
+plot3<-if (websiteLive) {
+    plotEnrich(enrichedEWSxEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS and EWSFLI1 shared Enrichr:GO Cell Component")
+}
+
+
+```
+
+# EWSFLI1 unique genes GO terms
+
+```{r enrichr EWSFLI1 only, echo=FALSE, message=FALSE, warning=FALSE}
+
+#Biological Process
+if (websiteLive) {
+    plotEnrich(enrichedEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWSFLI1 Enrichr: Go Biolog Process")
+}
+
+#Molecular Function
+if (websiteLive) {
+    plotEnrich(enrichedEWSFLI1$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWSFLI1 Enrichr: GO Molec Function")
+}
+
+#Cellular component
+if (websiteLive) {
+    plotEnrich(enrichedEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", "EWSFLI1 Enrichr: GO Cell Component")
+}
+
+```
+
+# EWS unique genes GO terms
+
+```{r enrichr EWS only, echo=FALSE, message=FALSE, warning=FALSE}
+
+#Biological Process
+if (websiteLive) {
+    plotEnrich(enrichedEWS$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS Enrichr: GO Biological Process")
+}
+
+#Molecular Function
+if (websiteLive) {
+    plotEnrich(enrichedEWS$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS Enrichr: GO Molec Function")
+}
+
+#Cellular component
+if (websiteLive) {
+    plotEnrich(enrichedEWS$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS Enrichr: GO Cell Component")
+}
+
+
+
+```
 
