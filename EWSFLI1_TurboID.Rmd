@@ -9,9 +9,7 @@ output: html_document
 ```{r setup packages, include=FALSE}
 
 library(readxl)
-#if (!require(devtools)) install.packages("devtools")
-#devtools::install_github("gaospecial/ggVennDiagram")
-library("ggVennDiagram")
+library("eulerr")
 library("dplyr")
 library("VennDiagram")
 
@@ -29,7 +27,8 @@ naomit_mydata <- lapply(my_data, function(x) x[!is.na(x)])
 
 ```{r venn diagram ews vs ewsfli1 only, include=FALSE}
 
-genes.venn<-ggVennDiagram(naomit_mydata)
+genes.venn <- euler(naomit_mydata)
+plot(genes.venn, quantities = TRUE)
 
 ```
 
@@ -37,4 +36,19 @@ genes.venn<-ggVennDiagram(naomit_mydata)
 
 VennPartition<-get.venn.partitions(naomit_mydata) %>% dplyr::as_tibble()
 
+
+
 ```
+
+
+```{r extracting venn partitions, include=FALSE}
+
+
+
+```
+
+
+
+
+
+
