@@ -16,14 +16,17 @@ library(eulerr)
 
 ```{r setup reading file, include=FALSE}
 
-my_data <- read_xlsx("UniqueGenes.xlsx")
+my_data <- as.list(read_xlsx("UniqueGenes.xlsx"))
+
+naomit_mydata <- lapply(my_data, function(x) x[!is.na(x)])
 
 ```
 
 
 ```{r venn diagram ews vs ewsfli1 only, include=FALSE}
 
-genes.
+genes.venn <- euler(naomit_mydata)
+plot(genes.venn, quantities = TRUE)
 
 ```
 
