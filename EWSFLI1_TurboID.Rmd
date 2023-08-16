@@ -3,8 +3,6 @@ title: "EWSFLI1 TurboID"
 author: "Aiola Stoja"
 date: "2023-08-14"
 output: html_document
-
-runtime: shiny
 ---
 
 
@@ -78,26 +76,39 @@ if (websiteLive) {
 
 ```
 
-# EWSFLI1 and EWS shared gene GO terms
+## EWSFLI1 and EWS shared gene GO terms {.tabset}
 
-```{r enrichr EWSxEWSFLI1 shared, echo=FALSE, message=FALSE, warning=FALSE }
+### Biological Process
+
+```{r enrichr EWSxEWSFLI1 Biological Process , echo=FALSE, message=FALSE, warning=FALSE}
 
 
 #Biological Process
-plot1<-if (websiteLive) {
+
+if (websiteLive) {
     plotEnrich(enrichedEWSxEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS and EWSFLI1 shared Enrichr: GO Biolog Process")
 }
+```
+
+### Molecular Function
+
+```{r enrichr EWSxEWSFLI1 Molecular Function , echo=FALSE, message=FALSE, warning=FALSE}
 
 #Molecular Function
-plot2<-if (websiteLive) {
+
+if (websiteLive) {
     plotEnrich(enrichedEWSxEWSFLI1$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS and EWSFLI1 shared Enrichr: GO Molec Function")
 }
+```
 
+### Cellular component
+
+```{r enrichr EWSxEWSFLI1 Cellular Component, echo=FALSE, message=FALSE, warning=FALSE}
 #Cellular component
-plot3<-if (websiteLive) {
+
+if (websiteLive) {
     plotEnrich(enrichedEWSxEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS and EWSFLI1 shared Enrichr:GO Cell Component")
 }
-
 
 ```
 
