@@ -4,7 +4,11 @@ author: "Aiola Stoja"
 date: "2023-08-14"
 output: html_document
 ---
-
+<style type="text/css">
+   .main-container {max-width: 100%;}
+   .row {display: flex;}
+   .column {flex: 50%;}
+</style>
 
 ```{r setup packages, include=FALSE}
 
@@ -76,6 +80,9 @@ if (websiteLive) {
 
 ```
 
+<div class = "row">
+<div class = "column">
+
 ## EWSFLI1 and EWS shared gene GO terms {.tabset}
 
 ### Biological Process
@@ -112,20 +119,36 @@ if (websiteLive) {
 
 ```
 
-# EWSFLI1 unique genes GO terms
+</div>
 
-```{r enrichr EWSFLI1 only, echo=FALSE, message=FALSE, warning=FALSE}
+<div class = "column">
+
+## EWSFLI1 unique gene GO terms {.tabset}
+
+### Biological Process
+
+```{r enrichr EWSFLI1 only Biological Process, echo=FALSE, message=FALSE, warning=FALSE}
 
 #Biological Process
 if (websiteLive) {
     plotEnrich(enrichedEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWSFLI1 Enrichr: Go Biolog Process")
 }
 
+```
+
+### Molecular Function
+
+```{r enrichr EWSFLI1 only Molecular Function, echo=FALSE, message=FALSE, warning=FALSE}
 #Molecular Function
 if (websiteLive) {
     plotEnrich(enrichedEWSFLI1$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWSFLI1 Enrichr: GO Molec Function")
 }
 
+```
+
+### Cellular Component 
+
+```{r enrichr EWSFLI1 only Cellular Component, echo=FALSE, message=FALSE, warning=FALSE}
 #Cellular component
 if (websiteLive) {
     plotEnrich(enrichedEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", "EWSFLI1 Enrichr: GO Cell Component")
@@ -133,26 +156,40 @@ if (websiteLive) {
 
 ```
 
-# EWS unique genes GO terms
+## EWS unique gene GO terms {.tabset}
 
-```{r enrichr EWS only, echo=FALSE, message=FALSE, warning=FALSE}
+### Biological Process
+
+```{r enrichr EWS only Biological process, echo=FALSE, message=FALSE, warning=FALSE}
 
 #Biological Process
 if (websiteLive) {
     plotEnrich(enrichedEWS$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS Enrichr: GO Biological Process")
 }
 
+```
+
+### Molecular Function
+
+```{r enrichr EWS only Molecular Function, echo=FALSE, message=FALSE, warning=FALSE}
+
 #Molecular Function
 if (websiteLive) {
     plotEnrich(enrichedEWS$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS Enrichr: GO Molec Function")
 }
+
+```
+
+### Cellular Component
+
+```{r enrichr EWS only Cellular Component, echo=FALSE, message=FALSE, warning=FALSE}
 
 #Cellular component
 if (websiteLive) {
     plotEnrich(enrichedEWS$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS Enrichr: GO Cell Component")
 }
 
-
-
 ```
 
+</div>
+</div>
