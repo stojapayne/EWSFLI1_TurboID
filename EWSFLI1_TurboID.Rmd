@@ -13,13 +13,15 @@ output: html_document
 ```{r setup packages, include=FALSE}
 
 library(readxl)
-library("eulerr")
-library("dplyr")
-library("VennDiagram")
+library(eulerr)
+library(dplyr)
+library(VennDiagram)
 library(devtools)
 #install_github("wjawaid/enrichR")
 library(enrichR)
 library(ggpubr)
+library(tidyr)
+library(kableExtra)
 
 ```
 
@@ -90,10 +92,11 @@ if (websiteLive) {
 ```{r enrichr EWSxEWSFLI1 Biological Process , echo=FALSE, message=FALSE, warning=FALSE}
 
 
+
 #Biological Process
 
 if (websiteLive) {
-    plotEnrich(enrichedEWSxEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS and EWSFLI1 shared Enrichr: GO Biolog Process")
+    plotEnrich(enrichedEWSxEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS and EWSFLI1 shared Enrichr: GO Biolog Process")
 }
 ```
 
@@ -101,20 +104,24 @@ if (websiteLive) {
 
 ```{r enrichr EWSxEWSFLI1 Molecular Function , echo=FALSE, message=FALSE, warning=FALSE}
 
+
+
 #Molecular Function
 
 if (websiteLive) {
-    plotEnrich(enrichedEWSxEWSFLI1$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS and EWSFLI1 shared Enrichr: GO Molec Function")
+    plotEnrich(enrichedEWSxEWSFLI1$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS and EWSFLI1 shared Enrichr: GO Molec Function")
 }
 ```
 
 ### Cellular component
 
 ```{r enrichr EWSxEWSFLI1 Cellular Component, echo=FALSE, message=FALSE, warning=FALSE}
+
+
 #Cellular component
 
 if (websiteLive) {
-    plotEnrich(enrichedEWSxEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS and EWSFLI1 shared Enrichr:GO Cell Component")
+    plotEnrich(enrichedEWSxEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS and EWSFLI1 shared Enrichr:GO Cell Component")
 }
 
 ```
@@ -129,9 +136,10 @@ if (websiteLive) {
 
 ```{r enrichr EWSFLI1 only Biological Process, echo=FALSE, message=FALSE, warning=FALSE}
 
+
 #Biological Process
 if (websiteLive) {
-    plotEnrich(enrichedEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWSFLI1 Enrichr: Go Biolog Process")
+    plotEnrich(enrichedEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWSFLI1 Enrichr: Go Biolog Process")
 }
 
 ```
@@ -139,9 +147,11 @@ if (websiteLive) {
 ### Molecular Function
 
 ```{r enrichr EWSFLI1 only Molecular Function, echo=FALSE, message=FALSE, warning=FALSE}
+
+
 #Molecular Function
 if (websiteLive) {
-    plotEnrich(enrichedEWSFLI1$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWSFLI1 Enrichr: GO Molec Function")
+    plotEnrich(enrichedEWSFLI1$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWSFLI1 Enrichr: GO Molec Function")
 }
 
 ```
@@ -149,12 +159,20 @@ if (websiteLive) {
 ### Cellular Component 
 
 ```{r enrichr EWSFLI1 only Cellular Component, echo=FALSE, message=FALSE, warning=FALSE}
+
+
 #Cellular component
 if (websiteLive) {
-    plotEnrich(enrichedEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", "EWSFLI1 Enrichr: GO Cell Component")
+    plotEnrich(enrichedEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", "EWSFLI1 Enrichr: GO Cell Component")
 }
 
 ```
+
+</div>
+</div>
+
+<div class = "row">
+<div class = "col-md-6">
 
 ## EWS unique gene GO terms {.tabset}
 
@@ -162,9 +180,10 @@ if (websiteLive) {
 
 ```{r enrichr EWS only Biological process, echo=FALSE, message=FALSE, warning=FALSE}
 
+
 #Biological Process
 if (websiteLive) {
-    plotEnrich(enrichedEWS$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS Enrichr: GO Biological Process")
+    plotEnrich(enrichedEWS$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS Enrichr: GO Biological Process")
 }
 
 ```
@@ -173,9 +192,10 @@ if (websiteLive) {
 
 ```{r enrichr EWS only Molecular Function, echo=FALSE, message=FALSE, warning=FALSE}
 
+
 #Molecular Function
 if (websiteLive) {
-    plotEnrich(enrichedEWS$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS Enrichr: GO Molec Function")
+    plotEnrich(enrichedEWS$GO_Molecular_Function_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS Enrichr: GO Molec Function")
 }
 
 ```
@@ -184,12 +204,60 @@ if (websiteLive) {
 
 ```{r enrichr EWS only Cellular Component, echo=FALSE, message=FALSE, warning=FALSE}
 
+
 #Cellular component
 if (websiteLive) {
-    plotEnrich(enrichedEWS$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "P.value", title = "EWS Enrichr: GO Cell Component")
+    plotEnrich(enrichedEWS$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS Enrichr: GO Cell Component")
 }
 
 ```
 
 </div>
+
+## Enrichr Terms and Associated Genes {.tabset .tabset-fade .tabset-pills}
+
+### EWS {.tabset .tabset-fade .tabset-pills}
+
+#### EWS GO Molecular Function
+
+<div class = "col-md-6">
+
+```{r enrichr gene tabular view; EWS only Molec Function, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+
+EWS_GOMolecFunct_DF <- enrichedEWS[["GO_Molecular_Function_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(EWS_GOMolecFunct_DF, col.names = gsub("[.]", " ", names(EWS_GOMolecFunct_DF)), caption = "EWS Unique Genes  GO Molecular Function") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+```
+
+#### EWS GO Cell Component {.active}
+
+```{r enrichr gene tabular view; EWS only Cell Component, echo=FALSE, message=FALSE, warning=FALSE}
+
+EWS_GOCellComponent_DF <- enrichedEWS[["GO_Cellular_Component_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(EWS_GOCellComponent_DF, col.names = gsub("[.]", " ", names(EWS_GOCellComponent_DF)), caption = "EWS Unique Genes  GO Cell Component") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+
+
+```
+
+
+
+
 </div>
+</div>
+
+
+
