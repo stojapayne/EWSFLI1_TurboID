@@ -386,5 +386,123 @@ knitr::kable(Shared_GOBiologProcess_DF , col.names = gsub("[.]", " ", names(Shar
 </div>
 </div>
 
+```{r Venn Diagram including siRNA screen, echo=FALSE, message=FALSE, warning=FALSE}
+
+siRNAscreen <- read_xlsx("siRNA screen_hits (2).xlsx")
+
+my_data$siRNA_genes <- siRNAscreen$`Gene Symbol...3`
+
+naomit_datawithsiRNA<-lapply(my_data, function(x) x[!is.na(x)])
+
+siRNAxTurboID.venn <- euler(naomit_datawithsiRNA)
+plot(siRNAxTurboID.venn, quantities = TRUE)
 
 
+
+```
+
+
+```{r Venn Diagram including siRNA screen cutoff -1.5, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+my_data$siRNA_genes_cutoff1.5 <- siRNAscreen$`Gene Symbol...14`
+
+naomit_datawithsiRNAcutoff1.5<-lapply(my_data, function(x) x[!is.na(x)])
+
+siRNALowerCutoffxTurboID.venn <- euler(naomit_datawithsiRNAcutoff1.5)
+plot(siRNALowerCutoffxTurboID.venn, quantities = TRUE)
+
+
+
+```
+
+```{r extracting venn partitions with siRNA, include=FALSE}
+
+VennPartitionsiRNA<-get.venn.partitions(naomit_datawithsiRNA) %>% dplyr::as_tibble()
+
+cutoff1.5onlyVenn <- my_data[-3]
+
+VennPartitionssiRNAcutoff1.5<- get.venn.partitions(cutoff1.5onlyVenn) %>% dplyr::as_tibble()
+
+listVennPartitionsiRNA <- setNames(as.list(VennPartitionsiRNA$..values..), VennPartitionsiRNA$..set..)
+listVennPartitionsCutoff1.5 <- setNames(as.list(VennPartitionssiRNAcutoff1.5$..values..), VennPartitionssiRNAcutoff1.5$..set..)
+
+```
+
+
+
+```{r setup enrichr including siRNA screen , include=FALSE}
+
+websiteLive <- getOption("enrichR.live")
+if (websiteLive) {
+    listEnrichrSites()
+    setEnrichrSite("Enrichr") # Human genes   
+}
+
+if (websiteLive) dbs <- listEnrichrDbs()
+
+dbs <- c("GO_Molecular_Function_2015", "GO_Cellular_Component_2015", "GO_Biological_Process_2015")
+
+if (websiteLive) {
+    enrichedsiRNAxEWSFLI1 <- enrichr(listVennPartitionsiRNA[["(EWS::FLI1∩siRNA_genes)∖(EWS)"]], dbs)
+}
+
+if (websiteLive) {
+    enrichedsiRNAxEWSFLI1xEWS <- enrichr(listVennPartitionsiRNA[["EWS∩EWS::FLI1∩siRNA_genes"]], dbs)
+}
+
+if (websiteLive) {
+    enrichedEWSxsiRNA <- enrichr(listVennPartitionsiRNA[["(EWS∩siRNA_genes)∖(EWS::FLI1)"]], dbs)
+}
+
+
+
+```
+
+
+```{r enrichr siRNAxEWSFLI1 Biological Process , echo=FALSE, message=FALSE, warning=FALSE}
+
+
+
+#Biological Process
+
+if (websiteLive) {
+    plotEnrich(enrichedsiRNAxEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "siRNA and EWSFLI1 shared Enrichr")
+}
+
+
+```
+```{r enrichr siRNAxEWSxEWSFLI1 Biological Processes, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+#Biological Process
+if (websiteLive) {
+    plotEnrich(enrichedsiRNAxEWSFLI1xEWS$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS Enrichr: GO Molec Function")
+}
+
+```
+
+```{r enrichr siRNAxEWS Biological Processes, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+#Biological Process
+
+if (websiteLive) {
+    plotEnrich(enrichedEWSxsiRNA$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS Enrichr: GO Molec Function")
+}
+
+```
+
+```{r enrichr gene tabular view; siRNAxEWSFLI1 GO Biological Process, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+siRNAxEWSFLI1_GOBiologProcess_DF <- enrichedsiRNAxEWSFLI1[["GO_Biological_Process_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(siRNAxEWSFLI1_GOBiologProcess_DF , col.names = gsub("[.]", " ", names(siRNAxEWSFLI1_GOBiologProcess_DF)), caption = "siRNAxEWSFLI1  GO Biological Process") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
