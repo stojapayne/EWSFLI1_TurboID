@@ -36,7 +36,7 @@ naomit_mydata <- lapply(my_data, function(x) x[!is.na(x)])
 
 # EWSFLI1 vs EWS TurboID Venn Diagram
 
-```{r venn diagram ews vs ewsfli1 only, echo=FALSE, message=FALSE, warning=FALSE}
+```{r venn diagram ews vs ewsfli1 only}
 
 genes.venn <- euler(naomit_mydata)
 plot(genes.venn, quantities = TRUE)
@@ -163,7 +163,7 @@ if (websiteLive) {
 
 #Cellular component
 if (websiteLive) {
-    plotEnrich(enrichedEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", "EWSFLI1 Enrichr: GO Cell Component")
+    plotEnrich(enrichedEWSFLI1$GO_Cellular_Component_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWSFLI1 Enrichr: GO Cell Component")
 }
 
 ```
@@ -253,6 +253,133 @@ knitr::kable(EWS_GOCellComponent_DF, col.names = gsub("[.]", " ", names(EWS_GOCe
 
 ```
 
+
+#### EWS GO Biological Process {.active}
+
+
+```{r enrichr gene tabular view; EWS only Biological Process, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+EWS_GOBiolgProcess_DF <- enrichedEWS[["GO_Biological_Process_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(EWS_GOBiolgProcess_DF, col.names = gsub("[.]", " ", names(EWS_GOBiolgProcess_DF)), caption = "EWS Unique Genes  GO Biological Process") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+
+
+
+```
+
+
+### EWSFLI1 {.active .tabset .tabset-fade .tabset-pills}
+
+#### EWSFLI1 GO Molecular Function
+
+```{r enrichr gene tabular view; EWSFLI1 only GO Molec Function, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+EWSFLI1_GOMolecularFunction_DF <- enrichedEWSFLI1[["GO_Molecular_Function_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(EWSFLI1_GOMolecularFunction_DF , col.names = gsub("[.]", " ", names(EWSFLI1_GOMolecularFunction_DF)), caption = "EWSFLI` Unique Genes  GO Molecular Function") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+
+```
+
+
+
+#### EWSFLI1 GO Cell Component
+
+```{r enrichr gene tabular view; EWSFLI1 only GO Cell Component, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+EWSFLI1_GOCellComponent_DF <- enrichedEWSFLI1[["GO_Cellular_Component_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(EWSFLI1_GOCellComponent_DF , col.names = gsub("[.]", " ", names(EWSFLI1_GOCellComponent_DF)), caption = "EWSFLI1 Unique Genes  GO Cell Component") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
+#### EWSFLI1 GO Biolgical Process {.active}
+
+```{r enrichr gene tabular view; EWSFLI1 only GO Biological Process, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+EWSFLI1_GOBiologProcess_DF <- enrichedEWSFLI1[["GO_Biological_Process_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(EWSFLI1_GOBiologProcess_DF , col.names = gsub("[.]", " ", names(EWSFLI1_GOBiologProcess_DF)), caption = "EWSFLI1 Unique Genes  GO Biological Process") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
+
+### EWSxEWSFLI1 shared  {.active .tabset .tabset-fade .tabset-pills}
+
+#### EWSxEWSFLI1 GO Molecular Function
+
+```{r enrichr gene tabular view; Shared GO Molec Function, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+Shared_GOMolecularProcess_DF <- enrichedEWSxEWSFLI1[["GO_Molecular_Function_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(Shared_GOMolecularProcess_DF , col.names = gsub("[.]", " ", names(Shared_GOMolecularProcess_DF)), caption = "Shared Genes  GO Molecular Process") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
+#### EWSxEWSFLI1 GO Cell Component
+
+
+```{r enrichr gene tabular view; Shared GO Cell Component, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+Shared_GOCellComponent_DF <- enrichedEWSxEWSFLI1[["GO_Cellular_Component_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(Shared_GOCellComponent_DF , col.names = gsub("[.]", " ", names(Shared_GOCellComponent_DF)), caption = "Shared Genes  GO Cell Component") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
+
+#### EWSxEWSFLI1 GO Biological Process {.active}
+
+```{r enrichr gene tabular view; Shared GO Biological Process, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+Shared_GOBiologProcess_DF <- enrichedEWSxEWSFLI1[["GO_Biological_Process_2015"]] %>% 
+  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
+  arrange(Adjusted.P.value)
+
+knitr::kable(Shared_GOBiologProcess_DF , col.names = gsub("[.]", " ", names(Shared_GOBiologProcess_DF)), caption = "Shared Genes  GO Biological Process") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
 
 
 
