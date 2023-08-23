@@ -386,6 +386,9 @@ knitr::kable(Shared_GOBiologProcess_DF , col.names = gsub("[.]", " ", names(Shar
 </div>
 </div>
 
+<div class = "row">
+<div class = "column">
+
 ```{r Venn Diagram including siRNA screen, echo=FALSE, message=FALSE, warning=FALSE}
 
 siRNAscreen <- read_xlsx("siRNA screen_hits (2).xlsx")
@@ -402,19 +405,6 @@ plot(siRNAxTurboID.venn, quantities = TRUE)
 ```
 
 
-```{r Venn Diagram including siRNA screen cutoff -1.5, echo=FALSE, message=FALSE, warning=FALSE}
-
-
-my_data$siRNA_genes_cutoff1.5 <- siRNAscreen$`Gene Symbol...14`
-
-naomit_datawithsiRNAcutoff1.5<-lapply(my_data, function(x) x[!is.na(x)])
-
-siRNALowerCutoffxTurboID.venn <- euler(naomit_datawithsiRNAcutoff1.5)
-plot(siRNALowerCutoffxTurboID.venn, quantities = TRUE)
-
-
-
-```
 
 ```{r extracting venn partitions with siRNA, include=FALSE}
 
@@ -426,6 +416,48 @@ VennPartitionssiRNAcutoff1.5<- get.venn.partitions(cutoff1.5onlyVenn) %>% dplyr:
 
 listVennPartitionsiRNA <- setNames(as.list(VennPartitionsiRNA$..values..), VennPartitionsiRNA$..set..)
 listVennPartitionsCutoff1.5 <- setNames(as.list(VennPartitionssiRNAcutoff1.5$..values..), VennPartitionssiRNAcutoff1.5$..set..)
+
+```
+
+</div>
+
+<div class = "column">
+
+
+## Shared genes from siRNA screen  {.tabset}
+
+### All Shared (siRNA, EWSFLI1, EWS)
+
+```{r venn partitions siRNA gene tabular view; siRNAxEWSFLI1xEWS GO Biological Process, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+siRNAxEWSFLI1xEWS_GenesDF <- as.data.frame(listVennPartitionsiRNA[["EWS∩EWS::FLI1∩siRNA_genes"]])
+
+siRNAxEWSFLI1xEWS_GenesDF<- rename(siRNAxEWSFLI1xEWS_GenesDF, SharedGenes = starts_with("list"))
+
+
+knitr::kable(siRNAxEWSFLI1xEWS_GenesDF , col.names = gsub("[.]", " ", names(siRNAxEWSFLI1xEWS_GenesDF)), caption = "siRNAxEWSFLI1xEWS  shared genes") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
+
+</div>
+</div>
+
+```{r Venn Diagram including siRNA screen cutoff -1.5, include = FALSE}
+
+
+my_data$siRNA_genes_cutoff1.5 <- siRNAscreen$`Gene Symbol...14`
+
+naomit_datawithsiRNAcutoff1.5<-lapply(my_data, function(x) x[!is.na(x)])
+
+siRNALowerCutoffxTurboID.venn <- euler(naomit_datawithsiRNAcutoff1.5)
+plot(siRNALowerCutoffxTurboID.venn, quantities = TRUE)
+
+
 
 ```
 
@@ -460,7 +492,7 @@ if (websiteLive) {
 ```
 
 
-```{r enrichr siRNAxEWSFLI1 Biological Process , echo=FALSE, message=FALSE, warning=FALSE}
+```{r enrichr siRNAxEWSFLI1 Biological Process , include = FALSE}
 
 
 
@@ -482,7 +514,7 @@ if (websiteLive) {
 
 ```
 
-```{r enrichr siRNAxEWS Biological Processes, echo=FALSE, message=FALSE, warning=FALSE}
+```{r enrichr siRNAxEWS Biological Processes, include = FALSE}
 
 
 #Biological Process
@@ -493,7 +525,7 @@ if (websiteLive) {
 
 ```
 
-```{r enrichr gene tabular view; siRNAxEWSFLI1 GO Biological Process, echo=FALSE, message=FALSE, warning=FALSE}
+```{r enrichr gene tabular view; siRNAxEWSFLI1 GO Biological Process, include = FALSE}
 
 
 siRNAxEWSFLI1_GOBiologProcess_DF <- enrichedsiRNAxEWSFLI1[["GO_Biological_Process_2015"]] %>% 
