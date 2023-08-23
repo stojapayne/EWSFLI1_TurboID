@@ -389,6 +389,8 @@ knitr::kable(Shared_GOBiologProcess_DF , col.names = gsub("[.]", " ", names(Shar
 <div class = "row">
 <div class = "column">
 
+# Comparing siRNA screen genes with EWSFLI1, EWS TurboID results
+
 ```{r Venn Diagram including siRNA screen, echo=FALSE, message=FALSE, warning=FALSE}
 
 siRNAscreen <- read_xlsx("siRNA screen_hits (2).xlsx")
@@ -426,9 +428,9 @@ listVennPartitionsCutoff1.5 <- setNames(as.list(VennPartitionssiRNAcutoff1.5$..v
 
 ## Shared genes from siRNA screen  {.tabset}
 
-### All Shared (siRNA, EWSFLI1, EWS)
+### All Shared (23)
 
-```{r venn partitions siRNA gene tabular view; siRNAxEWSFLI1xEWS GO Biological Process, echo=FALSE, message=FALSE, warning=FALSE}
+```{r venn partitions siRNA gene tabular view; siRNAxEWSFLI1xEWS, echo=FALSE, message=FALSE, warning=FALSE}
 
 
 siRNAxEWSFLI1xEWS_GenesDF <- as.data.frame(listVennPartitionsiRNA[["EWS∩EWS::FLI1∩siRNA_genes"]])
@@ -442,6 +444,43 @@ knitr::kable(siRNAxEWSFLI1xEWS_GenesDF , col.names = gsub("[.]", " ", names(siRN
 
 
 ```
+
+
+### siRNA and EWSFLI1 shared (37)
+
+```{r venn partitions siRNA gene tabular view; siRNAxEWSFLI1, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+siRNAxEWSFLI1_GenesDF <- as.data.frame(listVennPartitionsiRNA[["(EWS::FLI1∩siRNA_genes)∖(EWS)"]])
+
+siRNAxEWSFLI1_GenesDF<- rename(siRNAxEWSFLI1_GenesDF, SharedGenes = starts_with("list"))
+
+
+knitr::kable(siRNAxEWSFLI1_GenesDF , col.names = gsub("[.]", " ", names(siRNAxEWSFLI1_GenesDF)), caption = "siRNAxEWSFLI1  shared genes") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
+
+### siRNA and EWS shared (17)
+
+```{r venn partitions siRNA gene tabular view; siRNAxEWS, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+siRNAxEWS_GenesDF <- as.data.frame(listVennPartitionsiRNA[["(EWS∩siRNA_genes)∖(EWS::FLI1)"]])
+
+siRNAxEWS_GenesDF<- rename(siRNAxEWS_GenesDF, SharedGenes = starts_with("list"))
+
+
+knitr::kable(siRNAxEWS_GenesDF , col.names = gsub("[.]", " ", names(siRNAxEWS_GenesDF)), caption = "siRNAxEWS shared genes") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
 
 
 </div>
@@ -463,78 +502,3 @@ plot(siRNALowerCutoffxTurboID.venn, quantities = TRUE)
 
 
 
-```{r setup enrichr including siRNA screen , include=FALSE}
-
-websiteLive <- getOption("enrichR.live")
-if (websiteLive) {
-    listEnrichrSites()
-    setEnrichrSite("Enrichr") # Human genes   
-}
-
-if (websiteLive) dbs <- listEnrichrDbs()
-
-dbs <- c("GO_Molecular_Function_2015", "GO_Cellular_Component_2015", "GO_Biological_Process_2015")
-
-if (websiteLive) {
-    enrichedsiRNAxEWSFLI1 <- enrichr(listVennPartitionsiRNA[["(EWS::FLI1∩siRNA_genes)∖(EWS)"]], dbs)
-}
-
-if (websiteLive) {
-    enrichedsiRNAxEWSFLI1xEWS <- enrichr(listVennPartitionsiRNA[["EWS∩EWS::FLI1∩siRNA_genes"]], dbs)
-}
-
-if (websiteLive) {
-    enrichedEWSxsiRNA <- enrichr(listVennPartitionsiRNA[["(EWS∩siRNA_genes)∖(EWS::FLI1)"]], dbs)
-}
-
-
-
-```
-
-
-```{r enrichr siRNAxEWSFLI1 Biological Process , include = FALSE}
-
-
-
-#Biological Process
-
-if (websiteLive) {
-    plotEnrich(enrichedsiRNAxEWSFLI1$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "siRNA and EWSFLI1 shared Enrichr")
-}
-
-
-```
-```{r enrichr siRNAxEWSxEWSFLI1 Biological Processes, echo=FALSE, message=FALSE, warning=FALSE}
-
-
-#Biological Process
-if (websiteLive) {
-    plotEnrich(enrichedsiRNAxEWSFLI1xEWS$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS Enrichr: GO Molec Function")
-}
-
-```
-
-```{r enrichr siRNAxEWS Biological Processes, include = FALSE}
-
-
-#Biological Process
-
-if (websiteLive) {
-    plotEnrich(enrichedEWSxsiRNA$GO_Biological_Process_2015, showTerms = 20, numChar = 40, y = "Count", orderBy = "Adjusted.P.value", title = "EWS Enrichr: GO Molec Function")
-}
-
-```
-
-```{r enrichr gene tabular view; siRNAxEWSFLI1 GO Biological Process, include = FALSE}
-
-
-siRNAxEWSFLI1_GOBiologProcess_DF <- enrichedsiRNAxEWSFLI1[["GO_Biological_Process_2015"]] %>% 
-  select(-c(Old.P.value, Old.Adjusted.P.value, Odds.Ratio, Combined.Score)) %>%
-  arrange(Adjusted.P.value)
-
-knitr::kable(siRNAxEWSFLI1_GOBiologProcess_DF , col.names = gsub("[.]", " ", names(siRNAxEWSFLI1_GOBiologProcess_DF)), caption = "siRNAxEWSFLI1  GO Biological Process") %>%
-   kable_styling("striped", full_width = F) %>% 
- scroll_box(width = "700px", height = "300px")
-
-
-```
