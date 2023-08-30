@@ -495,14 +495,32 @@ CaplansiScreenG1 <- read_xlsx("Caplan siRNA screen.xlsx", sheet = 1)%>%
 #filter for genes only
 CaplansiScreenG1 <- CaplansiScreenG1[,3, drop = FALSE]
 
-CaplansiScreenG2 <- read_xlsx("Caplan siRNA screen.xlsx", sheet = 2)
+#place into a list
+CaplansiScreenG1<- as.list(CaplansiScreenG1)
 
-naomit_mydata <- lapply(my_data, function(x) x[!is.na(x)])
+#change name of list element to CaplansiScreenG1
+names(CaplansiScreenG1)<- c("CaplansiRNAgenes")
 
+#add in liesls data with element name as LieslsiScreenGenes 
+CaplansiScreenG1$LieslsiScreenGenes <- siRNAscreen$`Gene Symbol...3`
 
-
+#remove NA values from liesls data
+CaplansiScreenG1<-lapply(CaplansiScreenG1, function(x) x[!is.na(x)])
 
 ```
 
+```{r siRNA screen comparison Caplan & Liesl - reading data, include = FALSE}
 
+CaplanxLieslgenes <- euler(CaplansiScreenG1)
+plot(CaplanxLieslgenes, quantities = TRUE)
+
+VennPartitionCaplanxLiesl<-get.venn.partitions(CaplansiScreenG1) %>% 
+  dplyr::as_tibble() %>%
+  select(c(..set.., ..values..))
+
+VennPartitionCaplanxLiesl <- setNames(as.list(VennPartitionCaplanxLiesl$..values..), VennPartitionCaplanxLiesl$..set..)
+
+CaplanxLieslShared <- as.data.frame(VennPartitionCaplanxLiesl$`CaplansiRNAgenes∩LieslsiScreenGenes`)
+
+```
 
