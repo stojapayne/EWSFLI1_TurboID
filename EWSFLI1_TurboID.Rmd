@@ -36,7 +36,7 @@ naomit_mydata <- lapply(my_data, function(x) x[!is.na(x)])
 
 # EWSFLI1 vs EWS TurboID Venn Diagram
 
-```{r venn diagram ews vs ewsfli1 only}
+```{r venn diagram ews vs ewsfli1 only,  echo=FALSE, message=FALSE, warning=FALSE}
 
 genes.venn <- euler(naomit_mydata)
 plot(genes.venn, quantities = TRUE)
@@ -486,15 +486,14 @@ knitr::kable(siRNAxEWS_GenesDF , col.names = gsub("[.]", " ", names(siRNAxEWS_Ge
 </div>
 </div>
 
-```{r Venn Diagram including siRNA screen cutoff -1.5, include = FALSE}
+```{r siRNA screen comparison Caplan & Liesl - reading data, include = FALSE}
 
+CaplansiScreenG1 <- read_xlsx("Caplan siRNA screen.xlsx", sheet = 1)
 
-my_data$siRNA_genes_cutoff1.5 <- siRNAscreen$`Gene Symbol...14`
+CaplansiScreenG2 <- read_xlsx("Caplan siRNA screen.xlsx", sheet = 2)
 
-naomit_datawithsiRNAcutoff1.5<-lapply(my_data, function(x) x[!is.na(x)])
+naomit_mydata <- lapply(my_data, function(x) x[!is.na(x)])
 
-siRNALowerCutoffxTurboID.venn <- euler(naomit_datawithsiRNAcutoff1.5)
-plot(siRNALowerCutoffxTurboID.venn, quantities = TRUE)
 
 
 
