@@ -488,7 +488,12 @@ knitr::kable(siRNAxEWS_GenesDF , col.names = gsub("[.]", " ", names(siRNAxEWS_Ge
 
 ```{r siRNA screen comparison Caplan & Liesl - reading data, include = FALSE}
 
-CaplansiScreenG1 <- read_xlsx("Caplan siRNA screen.xlsx", sheet = 1)
+#filter for genes with at least 2 siRNAs with Zdiff scores below -1.5
+CaplansiScreenG1 <- read_xlsx("Caplan siRNA screen.xlsx", sheet = 1)%>%
+  filter(...9 <= -1.5)
+
+#filter for genes only
+CaplansiScreenG1 <- CaplansiScreenG1[,3, drop = FALSE]
 
 CaplansiScreenG2 <- read_xlsx("Caplan siRNA screen.xlsx", sheet = 2)
 
