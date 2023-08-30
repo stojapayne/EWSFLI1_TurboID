@@ -23,6 +23,7 @@ library(ggpubr)
 library(tidyr)
 library(kableExtra)
 
+
 ```
 
 
@@ -518,9 +519,20 @@ VennPartitionCaplanxLiesl<-get.venn.partitions(CaplansiScreenG1) %>%
   dplyr::as_tibble() %>%
   select(c(..set.., ..values..))
 
-VennPartitionCaplanxLiesl <- setNames(as.list(VennPartitionCaplanxLiesl$..values..), VennPartitionCaplanxLiesl$..set..)
+VennPartitionCaplanxLiesl_list <- setNames(as.list(VennPartitionCaplanxLiesl$..values..), VennPartitionCaplanxLiesl$..set..)
 
 CaplanxLieslShared <- as.data.frame(VennPartitionCaplanxLiesl$`CaplansiRNAgenes∩LieslsiScreenGenes`)
+
+CaplanxLieslShared <- tidyr::unnest(VennPartitionCaplanxLiesl[1,]) %>%
+  select(c(..values..))
+
+CaplanXLiesl_Caplanonly <- tidyr::unnest(VennPartitionCaplanxLiesl[3,]) %>%
+  select(c(..values..))
+
+CaplanXLiesl_Lieslonly <- tidyr::unnest(VennPartitionCaplanxLiesl[2,]) %>%
+  select(c(..values..))
+
+#write.csv(CaplanXLiesl_Lieslonly, "CaplanxLiesl_Lieslonly.csv")
 
 ```
 
