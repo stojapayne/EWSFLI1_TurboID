@@ -487,52 +487,5 @@ knitr::kable(siRNAxEWS_GenesDF , col.names = gsub("[.]", " ", names(siRNAxEWS_Ge
 </div>
 </div>
 
-```{r siRNA screen comparison Caplan & Liesl - reading data, include = FALSE}
 
-#filter for genes with at least 2 siRNAs with Zdiff scores below -1.5
-CaplansiScreenG1 <- read_xlsx("Caplan siRNA screen.xlsx", sheet = 1)%>%
-  filter(...9 <= -1.5)
-
-#filter for genes only
-CaplansiScreenG1 <- CaplansiScreenG1[,3, drop = FALSE]
-
-#place into a list
-CaplansiScreenG1<- as.list(CaplansiScreenG1)
-
-#change name of list element to CaplansiScreenG1
-names(CaplansiScreenG1)<- c("CaplansiRNAgenes")
-
-#add in liesls data with element name as LieslsiScreenGenes 
-CaplansiScreenG1$LieslsiScreenGenes <- siRNAscreen$`Gene Symbol...3`
-
-#remove NA values from liesls data
-CaplansiScreenG1<-lapply(CaplansiScreenG1, function(x) x[!is.na(x)])
-
-```
-
-```{r siRNA screen comparison Caplan & Liesl - reading data, include = FALSE}
-
-CaplanxLieslgenes <- euler(CaplansiScreenG1)
-plot(CaplanxLieslgenes, quantities = TRUE)
-
-VennPartitionCaplanxLiesl<-get.venn.partitions(CaplansiScreenG1) %>% 
-  dplyr::as_tibble() %>%
-  select(c(..set.., ..values..))
-
-VennPartitionCaplanxLiesl_list <- setNames(as.list(VennPartitionCaplanxLiesl$..values..), VennPartitionCaplanxLiesl$..set..)
-
-CaplanxLieslShared <- as.data.frame(VennPartitionCaplanxLiesl$`CaplansiRNAgenes∩LieslsiScreenGenes`)
-
-CaplanxLieslShared <- tidyr::unnest(VennPartitionCaplanxLiesl[1,]) %>%
-  select(c(..values..))
-
-CaplanXLiesl_Caplanonly <- tidyr::unnest(VennPartitionCaplanxLiesl[3,]) %>%
-  select(c(..values..))
-
-CaplanXLiesl_Lieslonly <- tidyr::unnest(VennPartitionCaplanxLiesl[2,]) %>%
-  select(c(..values..))
-
-#write.csv(CaplanXLiesl_Lieslonly, "CaplanxLiesl_Lieslonly.csv")
-
-```
 
