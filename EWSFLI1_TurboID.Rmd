@@ -487,5 +487,26 @@ knitr::kable(siRNAxEWS_GenesDF , col.names = gsub("[.]", " ", names(siRNAxEWS_Ge
 </div>
 </div>
 
+```{r extract PARP interacting genes, include=FALSE}
 
+PARPscreen <- read_xlsx("PARP protein screen.xlsx", sheet = 'Single-length PAR pull-down') 
+
+naomit_mydata$PARPscreen <- PARPscreen$`Gene.symbol`
+
+naomit_mydata$siRNAscreen <- siRNAscreen$`Gene Symbol...3`
+
+naomit_mydata <- lapply(naomit_mydata, function(x) x[!is.na(x)])
+
+PARPxRNAivenn <- euler(naomit_mydata)
+plot(PARPxRNAivenn, quantities = TRUE)
+
+VennPartitionsiRNA<-get.venn.partitions(naomit_mydata) %>% dplyr::as_tibble()
+
+listVennPartitionsiRNA <- setNames(as.list(VennPartitionsiRNA$..values..), VennPartitionsiRNA$..set..)
+
+PARpulldownxsiRNAscreen <- as.data.frame(listVennPartitionsiRNA$`(PARPscreen∩siRNAscreen)∖(EWS∪EWS::FLI1)`)
+
+write.csv(PARpulldownxsiRNAscreen, "PARpulldownxRNAiScreen.csv")
+
+```
 
