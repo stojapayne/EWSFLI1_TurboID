@@ -54,6 +54,63 @@ listVennPartition <- setNames(as.list(VennPartition$..values..), VennPartition$.
 
 ```
 
+</div>
+
+<div class = "column">
+
+## EWS:EWSFLI1 Venn Diagram Genes {.tabset}
+
+### EWSFLI1 only (394)
+
+```{r venn partitions gene tabular view; EWFLI1 only, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+EWSFLI1only <- as.data.frame(listVennPartition[["(EWS::FLI1)∖(EWS)"]])
+
+EWSFLI1only<- rename(EWSFLI1only, SharedGenes = starts_with("list"))
+
+
+knitr::kable(EWSFLI1only , col.names = gsub("[.]", " ", names(EWSFLI1only)), caption = "EWSFLI1 only genes") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
+### EWS only (235)
+
+```{r venn partitions gene tabular view; EWS only, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+EWSonly <- as.data.frame(listVennPartition[["(EWS)∖(EWS::FLI1)"]])
+
+EWSonly<- rename(EWSonly, SharedGenes = starts_with("list"))
+
+
+knitr::kable(EWSonly , col.names = gsub("[.]", " ", names(EWSonly)), caption = "EWS only genes") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
+### EWSxEWFLI1 Shared (206)
+
+```{r venn partitions gene tabular view; EWSxEWSFLI1 shared, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+EWSxEWSFLI1 <- as.data.frame(listVennPartition[["EWS∩EWS::FLI1"]])
+
+EWSxEWSFLI1<- rename(EWSxEWSFLI1, SharedGenes = starts_with("list"))
+
+
+knitr::kable(EWSxEWSFLI1 , col.names = gsub("[.]", " ", names(EWSxEWSFLI1)), caption = "EWSxEWSFLI1 shared genes") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
+
 
 ```{r setup enrichr , include=FALSE}
 
@@ -131,6 +188,7 @@ if (websiteLive) {
 
 <div class = "column">
 
+
 ## EWSFLI1 unique gene GO terms {.tabset}
 
 ### Biological Process
@@ -174,6 +232,9 @@ if (websiteLive) {
 
 <div class = "row">
 <div class = "col-md-6">
+
+
+
 
 ## EWS unique gene GO terms {.tabset}
 
@@ -482,7 +543,22 @@ knitr::kable(siRNAxEWS_GenesDF , col.names = gsub("[.]", " ", names(siRNAxEWS_Ge
 
 ```
 
+### siRNA genes only (542)
 
+```{r venn partitions siRNA gene tabular view; siRNA only, echo=FALSE, message=FALSE, warning=FALSE}
+
+
+siRNAonly <- as.data.frame(listVennPartitionsiRNA[["(siRNA_genes)∖(EWS∪EWS::FLI1)"]])
+
+siRNAonly<- rename(siRNAonly, SharedGenes = starts_with("list"))
+
+
+knitr::kable(siRNAonly , col.names = gsub("[.]", " ", names(siRNAonly)), caption = "siRNA only genes") %>%
+   kable_styling("striped", full_width = F) %>% 
+ scroll_box(width = "700px", height = "300px")
+
+
+```
 
 </div>
 </div>
